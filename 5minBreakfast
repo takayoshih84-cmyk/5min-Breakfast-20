@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>5min Breakfast</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .app {
+      width: 340px;
+      background: #1c1c1c;
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: #2a2a2a;
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+
+    .title {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .time {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #fff;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <h1>5min Breakfast</h1>
+
+  <div class="card">
+    <div class="title" id="title"></div>
+    <div class="time" id="time"></div>
+
+    <div class="section" id="ingredients"></div>
+    <div class="section" id="steps"></div>
+  </div>
+
+  <button onclick="generateMenu()">別のメニュー</button>
+</div>
+
+<script>
+const menus = [
+{
+name:"バナナヨーグルト",
+time:"3分",
+ingredients:["バナナ1本","ヨーグルト100g","はちみつ小さじ1"],
+steps:[
+"バナナを1cm幅に切る",
+"ヨーグルトとはちみつをボウルで10秒混ぜる",
+"バナナを加えて軽く混ぜ、器に盛る"
+]
+},
+{
+name:"プロテイントースト",
+time:"5分",
+ingredients:["食パン1枚","卵1個","チーズ1枚"],
+steps:[
+"食パンをトースターで2〜3分焼く",
+"フライパンで卵を中火で1〜2分焼く（半熟）",
+"パンに卵とチーズをのせる"
+]
+},
+{
+name:"ツナエッグ丼",
+time:"7分",
+ingredients:["ご飯1杯","ツナ1缶","卵1個"],
+steps:[
+"フライパンで卵を中火で1分焼き半熟にする",
+"ツナを軽くほぐす",
+"ご飯に卵とツナをのせる"
+]
+},
+{
+name:"チーズトースト",
+time:"4分",
+ingredients:["食パン1枚","チーズ1枚"],
+steps:[
+"パンにチーズをのせる",
+"トースターで2〜3分焼く（溶けるまで）",
+"皿に取り出す"
+]
+},
+{
+name:"ハムエッグ",
+time:"5分",
+ingredients:["卵1個","ハム2枚"],
+steps:[
+"フライパンでハムを中火で30秒焼く",
+"卵を入れて1〜2分焼く",
+"皿に盛る"
+]
+},
+{
+name:"ツナサンド",
+time:"6分",
+ingredients:["食パン2枚","ツナ1缶","マヨ大さじ1"],
+steps:[
+"ツナとマヨを混ぜる",
+"パンにのせる",
+"挟んで切る"
+]
+},
+{
+name:"オートミール粥",
+time:"5分",
+ingredients:["オートミール30g","水150ml","塩ひとつまみ"],
+steps:[
+"容器にオートミールと水を入れる",
+"600Wで2分加熱する",
+"塩を加えて混ぜる"
+]
+},
+{
+name:"卵スープ",
+time:"5分",
+ingredients:["卵1個","水200ml","鶏ガラ小さじ1"],
+steps:[
+"水と鶏ガラを中火で沸かす",
+"溶き卵をゆっくり入れる",
+"軽く混ぜて火を止める"
+]
+},
+{
+name:"バタートースト",
+time:"3分",
+ingredients:["食パン1枚","バター5g"],
+steps:[
+"パンを2分焼く",
+"バターを塗る",
+"皿に盛る"
+]
+},
+{
+name:"納豆卵かけご飯",
+time:"3分",
+ingredients:["ご飯1杯","納豆1パック","卵1個"],
+steps:[
+"納豆を20回混ぜる",
+"ご飯に納豆と卵をのせる",
+"軽く混ぜる"
+]
+},
+{
+name:"フレンチトースト",
+time:"8分",
+ingredients:["食パン1枚","卵1個","牛乳100ml"],
+steps:[
+"卵と牛乳を混ぜてパンを浸す",
+"弱め中火で両面2分ずつ焼く",
+"焼き色がついたら盛る"
+]
+},
+{
+name:"ベーコンエッグ",
+time:"6分",
+ingredients:["卵1個","ベーコン2枚"],
+steps:[
+"ベーコンを中火で1分焼く",
+"卵を入れて1〜2分焼く",
+"皿に盛る"
+]
+},
+{
+name:"ヨーグルトグラノーラ",
+time:"3分",
+ingredients:["ヨーグルト100g","グラノーラ30g"],
+steps:[
+"ヨーグルトを器に入れる",
+"グラノーラをのせる",
+"軽く混ぜる"
+]
+},
+{
+name:"サラダチキンプレート",
+time:"5分",
+ingredients:["サラダチキン1個","カット野菜1袋"],
+steps:[
+"チキンを一口大に切る",
+"野菜と一緒に盛る",
+"軽く混ぜる"
+]
+},
+{
+name:"卵雑炊",
+time:"7分",
+ingredients:["ご飯1杯","卵1個","水200ml"],
+steps:[
+"ご飯と水を2分煮る",
+"卵を回し入れる",
+"軽く混ぜて火を止める"
+]
+},
+{
+name:"ツナパスタ",
+time:"10分",
+ingredients:["パスタ100g","ツナ1缶"],
+steps:[
+"パスタを7分茹でる",
+"ツナと混ぜる",
+"皿に盛る"
+]
+},
+{
+name:"バナナトースト",
+time:"4分",
+ingredients:["食パン1枚","バナナ1本"],
+steps:[
+"バナナを切る",
+"パンにのせる",
+"2分焼く"
+]
+},
+{
+name:"卵焼き",
+time:"6分",
+ingredients:["卵2個","塩少々"],
+steps:[
+"卵と塩を混ぜる",
+"中火で焼きながら巻く",
+"切る"
+]
+},
+{
+name:"チーズオムレツ",
+time:"7分",
+ingredients:["卵2個","チーズ1枚"],
+steps:[
+"卵を溶く",
+"中火で焼く",
+"チーズを入れて包む"
+]
+},
+{
+name:"サバ缶ご飯",
+time:"3分",
+ingredients:["ご飯1杯","サバ缶1/2"],
+steps:[
+"サバをほぐす",
+"ご飯にのせる",
+"そのまま食べる"
+]
+}
+];
+
+function generateMenu() {
+  const m = menus[Math.floor(Math.random() * menus.length)];
+
+  document.getElementById("title").textContent = m.name;
+  document.getElementById("time").textContent = "調理時間: " + m.time;
+
+  document.getElementById("ingredients").innerHTML =
+    "【材料】<br>・" + m.ingredients.join("<br>・");
+
+  document.getElementById("steps").innerHTML =
+    "<br>【作り方】<br>" +
+    m.steps.map((s, i) => `${i+1}. ${s}`).join("<br>");
+}
+
+generateMenu();
+</script>
+
+</body>
+</html>
